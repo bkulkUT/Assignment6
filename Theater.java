@@ -1,10 +1,14 @@
 package assignment6;
 
+import java.util.ArrayList;
+
 public class Theater {
 	
+	private char startRow = 'A';
 	private final int rows = 26;
 	private final int cols = 28;
 	private int seats[][] = new int[rows][cols];
+	private int seatsLeft[] = new int [26];
 	
 	
 	public Theater () 
@@ -16,6 +20,11 @@ public class Theater {
 				seats[i][j] = 0;
 			}
 		}
+		
+		for (int j = 0; j < 26; j++)
+		{
+			seatsLeft[j] = 28;
+		}
 	}
 	
 	public synchronized int bestAvailableSeat ()
@@ -23,7 +32,7 @@ public class Theater {
 		int rowIncr = 100;
 		
 		// Check availibility of seat from best row (A) to worst (Z)
-		for (char seatRow = 'A'; seatRow <= 'Z'; seatRow++)
+		for (char seatRow = startRow; seatRow <= 'Z'; seatRow++)
 		{
 			// Check availibility of seat from best to worst columns
 			// (middle 7-21; left 0-6; right 21-27)
@@ -31,7 +40,7 @@ public class Theater {
 			{
 				if (seats[seatRow][midCol] == 0)
 				{
-					return midCol + rowIncr; 
+					return midCol + rowIncr + 1; 
 				}
 			}
 			
@@ -39,7 +48,7 @@ public class Theater {
 			{
 				if (seats[seatRow][leftCol] == 0)
 				{
-					return leftCol + rowIncr;
+					return leftCol + rowIncr + 1;
 				}
 			}
 			
@@ -47,7 +56,7 @@ public class Theater {
 			{
 				if (seats[seatRow][rightCol] == 0)
 				{
-					return rightCol + rowIncr;
+					return rightCol + rowIncr + 1;
 				}
 			}
 			rowIncr += 100;
@@ -58,8 +67,14 @@ public class Theater {
 	public synchronized void markAvailableSeatTaken (int seat)
 	{
 		int row = (seat/100);
-		int col = seat - (row * 100);
+		int col = (seat % 100) - 1;
 		seats[row][col] = 1;
+		seatsLeft[rows - 1] -= 1;
+		
+		if (seatsLeft[rows -1] == 0)
+		{
+			startRow++;
+		}
 		
 		return;
 	}
