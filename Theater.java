@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Theater {
 	
-	private char startRow = 'A';
-	private final int rows = 26;
-	private final int cols = 28;
-	private int seats[][] = new int[rows][cols];
-	private int seatsLeft[] = new int [26];
+	private static int startRow = 0;
+	private final static int rows = 26;
+	private final static int cols = 28;
+	private static int seats[][] = new int[rows][cols];
+	private static int seatsLeft[] = new int [26];
 	
 	
 	public Theater () 
@@ -34,7 +34,7 @@ public class Theater {
 		int rowIncr = 100;
 		
 		// Check availibility of seat from best row (A) to worst (Z)
-		for (char seatRow = startRow; seatRow <= 'Z'; seatRow++)
+		for (int seatRow = startRow; seatRow < 26; seatRow++)
 		{
 			// Check availibility of seat from best to worst columns
 			// (middle 7-21; left 0-6; right 21-27)
@@ -68,16 +68,15 @@ public class Theater {
 	
 	public synchronized void markAvailableSeatTaken (int seat)
 	{
-		int row = (seat/100);
+		int row = (seat/100) - 1;
 		int col = (seat % 100) - 1;
 		seats[row][col] = 1;
-		seatsLeft[rows - 1] -= 1;
+		seatsLeft[row] -= 1;
 		
-		if (seatsLeft[rows -1] == 0)
+		if (seatsLeft[row] == 0)
 		{
 			startRow++;
 		}
-		
 		return;
 	}
 	
