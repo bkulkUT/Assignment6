@@ -27,7 +27,6 @@ class ThreadedTicketClient implements Runnable {
 			
 			out.write("");
 			in.readLine();
-			
 			echoSocket.close();
 		} 
 		catch (Exception e) 

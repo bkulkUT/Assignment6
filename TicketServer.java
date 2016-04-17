@@ -31,24 +31,25 @@ class ThreadedTicketServer implements Runnable {
 	TicketClient sc;
 
 	public void run() {
-		// TODO 422C
-		ServerSocket serverSocket;
 		try 
 		{
-			serverSocket = new ServerSocket(TicketServer.PORT);
-			Socket clientSocket = serverSocket.accept();
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			String message = in.readLine();	
-			
-			int reservedSeat = TicketServer.theater.bestAvailableSeat();
-			
-			if (reservedSeat != -1)
+			ServerSocket serverSocket = new ServerSocket(TicketServer.PORT);
+
+			while (true)
 			{
-				TicketServer.theater.markAvailableSeatTaken(reservedSeat);
+				Socket clientSocket = serverSocket.accept();
+				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				String message = in.readLine();	
+				
+				int reservedSeat = TicketServer.theater.bestAvailableSeat();
+				
+				if (reservedSeat != -1)
+				{
+					TicketServer.theater.markAvailableSeatTaken(reservedSeat);
+				}
+				out.write(reservedSeat);
 			}
-			
-			out.write(reservedSeat);
 		} 
 		
 		catch (IOException e) 
