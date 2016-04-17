@@ -47,6 +47,8 @@ class ThreadedTicketServer implements Runnable {
 			{
 				TicketServer.theater.markAvailableSeatTaken(reservedSeat);
 			}
+			
+			out.write(reservedSeat);
 		} 
 		
 		catch (IOException e) 
