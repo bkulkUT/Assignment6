@@ -9,6 +9,7 @@ class ThreadedTicketClient implements Runnable {
 	String hostname = "127.0.0.1";
 	String threadname = "X";
 	TicketClient sc;
+	String command = "Reserve";
 
 	public ThreadedTicketClient(TicketClient sc, String hostname, String threadname) {
 		this.sc = sc;
@@ -17,20 +18,28 @@ class ThreadedTicketClient implements Runnable {
 	}
 
 	public void run() {
+		
 		System.out.flush();
+		
 		try 
 		{
 			Socket echoSocket = new Socket(hostname, TicketServer.PORT);
+			System.out.println("CLIENT : Opened a client socket to the server ...");
 			PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 			
-			out.write("");
-			in.readLine();
+			System.out.println("CLIENT : Writing a command, " + command + ", to the server!");
+			out.println(command);
+			System.out.println("CLIENT : Wrote a command");
+			
+			int reservation = Integer.parseInt(in.readLine());
+			System.out.println("CLIENT : Received seat " + reservation + "!");
 			echoSocket.close();
 		} 
+		
 		catch (Exception e) 
 		{
+			System.err.println("CLIENT : Unable to open a socket");
 			e.printStackTrace();
 		}
 	}
@@ -57,11 +66,15 @@ public class TicketClient {
 	}
 
 	void requestTicket() {
-		// TODO thread.run()
 		tc.run();
-		System.out.println(hostName + "," + threadName + " got one ticket");
 	}
-
+	
+	void closeWindow ()
+	{
+		tc.command = "Exit";
+		tc.run();
+	}
+	
 	void sleep() {
 		try {
 			Thread.sleep(100);

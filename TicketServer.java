@@ -8,18 +8,27 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class TicketServer {
+	
 	static int PORT = 2222;
 	static Theater theater = new Theater ();
-	
-	// EE422C: no matter how many concurrent requests you get,
-	// do not have more than three servers running concurrently
 	final static int MAXPARALLELTHREADS = 3;
 
 	public static void start(int portNumber) throws IOException {
 		PORT = portNumber;
-		Runnable serverThread = new ThreadedTicketServer();
-		Thread t = new Thread(serverThread);
-		t.start();
+	
+		ServerSocket serverSocket = new ServerSocket(TicketServer.PORT);
+		System.out.println("SERVER : Opened a server socket!");
+		
+		while (true)
+		{
+			System.out.println("SERVER : Waiting for connection ... ");
+			Socket clientSocket = serverSocket.accept();
+			System.out.println("SERVER : Connected to a client");
+			Runnable serverThread = new ThreadedTicketServer(clientSocket);
+			
+			Thread t = new Thread(serverThread);
+			t.start();
+		}
 	}
 }
 
@@ -29,19 +38,26 @@ class ThreadedTicketServer implements Runnable {
 	String threadname = "X";
 	String testcase;
 	TicketClient sc;
+	Socket socket;
 
+	public ThreadedTicketServer (Socket sock)
+	{
+		this.socket = sock;
+	}
+	
 	public void run() {
+		
+		System.out.println("SERVER : Inside run method of ThreadedTicketServer");
 		try 
-		{
-			ServerSocket serverSocket = new ServerSocket(TicketServer.PORT);
-
-			while (true)
+		{			
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			String message = in.readLine();
+			System.out.println("SERVER : Message received from client: " + message);
+			
+			if (!message.equals("Exit"))
 			{
-				Socket clientSocket = serverSocket.accept();
-				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				String message = in.readLine();	
-				
+				System.out.println("SERVER : Calling bestAvailableSeat using TicketServer Theater object");
 				int reservedSeat = TicketServer.theater.bestAvailableSeat();
 				
 				if (reservedSeat != -1)
@@ -50,12 +66,24 @@ class ThreadedTicketServer implements Runnable {
 				}
 				out.write(reservedSeat);
 			}
+			socket.close();
 		} 
 		
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
-
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
