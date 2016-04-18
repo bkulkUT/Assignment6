@@ -66,7 +66,7 @@ public class Theater {
 		return -1;
 	}
 	
-	public synchronized void markAvailableSeatTaken (int seat)
+	public synchronized void markAvailableSeatTaken (int seat, String thread)
 	{
 		int row = (seat/100) - 1;
 		int col = (seat % 100) - 1;
@@ -76,14 +76,25 @@ public class Theater {
 		if (seatsLeft[row] == 0)
 		{
 			startRow++;
-			System.out.println("");
 		}
+		printSeatTicket(row, col, thread);
+		
 		return;
 	}
 	
-	public void printSeatTicket (char row, int col)
+	public void printSeatTicket (int rowIndex, int colIndex, String threadName)
 	{
+		char rowName = (char)((rowIndex) + 'A');
+		int seatName = colIndex + 101;
 		
+		System.out.println("-----------------------------------");
+		System.out.println("       ~~~ ADMIT ONE ~~~");
+		System.out.println("      Reserving Booth: " + threadName);
+		System.out.println("The seat: " + rowName + "-" + seatName + " was reserved.");
+		
+		System.out.println("-----------------------------------");
+
+		return;
 	}
 }
 

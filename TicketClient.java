@@ -9,7 +9,7 @@ class ThreadedTicketClient implements Runnable {
 	String hostname = "127.0.0.1";
 	String threadname = "X";
 	TicketClient sc;
-	String command = "Reserve";
+	static String command = "Reserve";
 
 	public ThreadedTicketClient(TicketClient sc, String hostname, String threadname) {
 		this.sc = sc;
@@ -33,7 +33,7 @@ class ThreadedTicketClient implements Runnable {
 //			System.out.println("CLIENT : Wrote a command");
 			
 			int reservation = Integer.parseInt(in.readLine());
-			System.out.println("CLIENT : Received seat " + reservation + "!");
+//			System.out.println("CLIENT : Received seat " + reservation + "!");
 			echoSocket.close();
 		} 
 		
@@ -66,6 +66,7 @@ public class TicketClient {
 	}
 
 	void requestTicket() {
+		ThreadedTicketClient.command = this.threadName;
 		tc.run();
 	}
 	

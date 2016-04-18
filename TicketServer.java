@@ -69,7 +69,7 @@ class ThreadedTicketServer implements Runnable {
 				
 				if (reservedSeat != -1)
 				{
-					TicketServer.theater.markAvailableSeatTaken(reservedSeat);
+					TicketServer.theater.markAvailableSeatTaken(reservedSeat, message);
 				}
 				out.println(reservedSeat);
 			}
@@ -82,6 +82,22 @@ class ThreadedTicketServer implements Runnable {
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
