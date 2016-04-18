@@ -87,12 +87,11 @@ public class Theater {
 		char rowName = (char)((rowIndex) + 'A');
 		int seatName = colIndex + 101;
 		
-		System.out.println("-----------------------------------");
-		System.out.println("       ~~~ ADMIT ONE ~~~");
-		System.out.println("      Reserving Booth: " + threadName);
-		System.out.println("The seat: " + rowName + "-" + seatName + " was reserved.");
-		
-		System.out.println("-----------------------------------");
+		System.out.println("   -----------------------------------");
+		System.out.println("           ~~~ ADMIT ONE ~~~          ");
+		System.out.println("          Reserving Booth: " + threadName);
+		System.out.println("      The seat: " + rowName + "-" + seatName + " was reserved.");
+		System.out.println("   -----------------------------------");
 
 		return;
 	}
