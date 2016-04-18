@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Driver 
 {
-	final static int customersTotal = 4;
+	final static int customersTotal = 728;
 	
 	public static void main (String args[]) throws IOException, InterruptedException
 	{
@@ -23,19 +23,11 @@ public class Driver
 			}
 		};
 		t0.start();
-//
-//		TicketClient windowA = new TicketClient ("windowA");
-//		windowA.requestTicket();
-//		windowA.closeWindow();
-//		
-//		TicketClient windowB = new TicketClient ("windowB");
-//		windowB.requestTicket();
-//		windowB.closeWindow();
 		
 		final TicketClient c1 = new TicketClient("conc1");
 		final TicketClient c2 = new TicketClient("conc2");
 		
-		for (int i = 0; i < customersTotal; i--)
+		for (int i = 0; i < customersTotal; i++)
 		{
 			if ((i % 2) == 1)
 			{

@@ -29,9 +29,9 @@ public class Theater {
 	
 	public synchronized int bestAvailableSeat ()
 	{
-		System.out.println("THEATER : Inside bestAvailableSeat method!");
+//		System.out.println("THEATER : Inside bestAvailableSeat method!");
 		
-		int rowIncr = 100;
+		int rowIncr = 100 * (startRow + 1);
 		
 		// Check availibility of seat from best row (A) to worst (Z)
 		for (int seatRow = startRow; seatRow < 26; seatRow++)
@@ -76,6 +76,7 @@ public class Theater {
 		if (seatsLeft[row] == 0)
 		{
 			startRow++;
+			System.out.println("");
 		}
 		return;
 	}

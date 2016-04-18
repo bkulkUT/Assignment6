@@ -24,13 +24,13 @@ class ThreadedTicketClient implements Runnable {
 		try 
 		{
 			Socket echoSocket = new Socket(hostname, TicketServer.PORT);
-			System.out.println("CLIENT : Opened a client socket to the server ...");
+//			System.out.println("CLIENT : Opened a client socket to the server ...");
 			PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 			
-			System.out.println("CLIENT : Writing a command, " + command + ", to the server!");
+//			System.out.println("CLIENT : Writing a command, " + command + ", to the server!");
 			out.println(command);
-			System.out.println("CLIENT : Wrote a command");
+//			System.out.println("CLIENT : Wrote a command");
 			
 			int reservation = Integer.parseInt(in.readLine());
 			System.out.println("CLIENT : Received seat " + reservation + "!");
