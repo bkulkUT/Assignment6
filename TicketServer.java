@@ -10,14 +10,13 @@ import java.net.Socket;
 public class TicketServer {
 	
 	static int PORT = 2222;
-	static Theater theater = new Theater ();
+	static Theater theater = new Theater();
 	final static int MAXPARALLELTHREADS = 3;
 
 	public static void start(int portNumber) throws IOException {
 		PORT = portNumber;
-	
 		ServerSocket serverSocket = new ServerSocket(TicketServer.PORT);
-				
+		
 		while (true)
 		{
 			Socket clientSocket = serverSocket.accept();			
@@ -48,21 +47,19 @@ class ThreadedTicketServer implements Runnable {
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String message = in.readLine();
-			
-//			System.out.println("SERVER : Message received from client: " + message);
-			
+						
 			if (!message.equals("Exit"))
-			{
-//				System.out.println("SERVER : Calling bestAvailableSeat using TicketServer Theater object");
-				
-				int reservedSeat = TicketServer.theater.bestAvailableSeat();
-				
-				if (reservedSeat != -1)
+			{				
+				synchronized (TicketServer.theater)
 				{
-					TicketServer.theater.markAvailableSeatTaken(reservedSeat, message);
+					int reservedSeat = TicketServer.theater.bestAvailableSeat();
+					
+					if (reservedSeat != -1)
+					{
+						TicketServer.theater.markAvailableSeatTaken(reservedSeat, message);
+					}
+					out.println(reservedSeat);
 				}
-				out.println(reservedSeat);
-				//System.out.println(reservedSeat);
 			}
 			socket.close();
 		} 

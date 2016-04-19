@@ -27,7 +27,7 @@ public class Theater {
 		}
 	}
 	
-	public synchronized int bestAvailableSeat ()
+	public synchronized int bestAvailableSeat () throws InterruptedException
 	{
 		
 		int rowIncr = 100 * (startRow + 1);
@@ -78,7 +78,6 @@ public class Theater {
 		}
 		
 		printSeatTicket(row, col, thread);
-		Thread.sleep(5);
 	
 		return;
 	}

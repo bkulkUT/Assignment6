@@ -6,7 +6,6 @@ public class Driver
 {
 	final static int customersTotal = 729;
 	final static int seatsTotal = 728;
-
 	
 	public static void main (String args[]) throws IOException, InterruptedException
 	{
@@ -14,6 +13,8 @@ public class Driver
 		 * Create a ticket office in a separate thread
 		 * Have it wait on the clients to request a ticket (TicketClient)
 		 */
+		
+		Theater myTheater = new Theater ();
 		final TicketServer ticketOffice = new TicketServer ();
 		Thread t0 = new Thread () 
 		{
