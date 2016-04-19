@@ -4,8 +4,8 @@ import java.io.IOException;
 
 public class Driver 
 {
-//	final static int customersTotal = 56;
-	final static int customersTotal = 728;
+	final static int customersTotal = 729;
+	final static int seatsTotal = 728;
 
 	
 	public static void main (String args[]) throws IOException, InterruptedException
@@ -36,29 +36,42 @@ public class Driver
 		 */
 		final TicketClient c1 = new TicketClient("A");
 		final TicketClient c2 = new TicketClient("B");
-		for (int i = 0; i < customersTotal; i++)
+		try 
 		{
-			if ((i % 2) == 1)
+			for (int i = 0; i < seatsTotal; i++)
 			{
-				Thread t1 = new Thread() {
-					public void run() {
-						c1.requestTicket();
-					}
-				};
-				t1.start();
-				t1.join();
+				if ((i % 2) == 1)
+				{
+					Thread t1 = new Thread() {
+						public void run() {
+							c1.requestTicket();
+						}
+					};
+					t1.start();
+					t1.join();
+				}
+			
+				else 
+				{
+					Thread t2 = new Thread() {
+						public void run() {
+							c2.requestTicket();
+						}
+					};
+					t2.start();
+					t2.join();
+				}
 			}
+			
+			if (customersTotal > seatsTotal)
+			{
+				System.out.println("Sorry -- House is full!");
+			}
+		}
 		
-			else 
-			{
-				Thread t2 = new Thread() {
-					public void run() {
-						c2.requestTicket();
-					}
-				};
-				t2.start();
-				t2.join();
-			}
+		catch (Exception e)
+		{
+			System.err.println("");
 		}
 	}
 }
