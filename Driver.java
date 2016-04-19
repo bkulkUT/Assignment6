@@ -22,7 +22,7 @@ public class Driver
 			{
 				try 
 				{
-					ticketOffice.start(2222);
+					ticketOffice.start(2222, myTheater);
 				} 
 				catch (IOException e) {
 					e.printStackTrace();

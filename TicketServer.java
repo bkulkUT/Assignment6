@@ -10,10 +10,11 @@ import java.net.Socket;
 public class TicketServer {
 	
 	static int PORT = 2222;
-	static Theater theater = new Theater();
+	static Theater theater;
 	final static int MAXPARALLELTHREADS = 3;
 
-	public static void start(int portNumber) throws IOException {
+	public static void start(int portNumber, Theater myTheater) throws IOException {
+		theater = myTheater;
 		PORT = portNumber;
 		ServerSocket serverSocket = new ServerSocket(TicketServer.PORT);
 		
