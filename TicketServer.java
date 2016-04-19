@@ -17,19 +17,11 @@ public class TicketServer {
 		PORT = portNumber;
 	
 		ServerSocket serverSocket = new ServerSocket(TicketServer.PORT);
-		
-//		System.out.println("SERVER : Opened a server socket!");
-		
+				
 		while (true)
 		{
-//			System.out.println("SERVER : Waiting for connection ... ");
-			
-			Socket clientSocket = serverSocket.accept();
-			
-//			System.out.println("SERVER : Connected to a client");
-			
+			Socket clientSocket = serverSocket.accept();			
 			Runnable serverThread = new ThreadedTicketServer(clientSocket);
-			
 			Thread t = new Thread(serverThread);
 			t.start();
 		}
@@ -50,9 +42,7 @@ class ThreadedTicketServer implements Runnable {
 	}
 	
 	public void run() {
-		
-//		System.out.println("SERVER : Inside run method of ThreadedTicketServer");
-		
+				
 		try 
 		{			
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -72,6 +62,7 @@ class ThreadedTicketServer implements Runnable {
 					TicketServer.theater.markAvailableSeatTaken(reservedSeat, message);
 				}
 				out.println(reservedSeat);
+				//System.out.println(reservedSeat);
 			}
 			socket.close();
 		} 

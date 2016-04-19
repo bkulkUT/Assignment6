@@ -2,51 +2,125 @@ package assignment6;
 
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 public class TestTicketOffice {
 
 	public static int score = 0;
 
-	// @Test
+//	 @Test
 	public void basicServerTest() {
-		try {
-			TicketServer.start(16789);
-		} catch (Exception e) {
-			fail();
-		}
-		TicketClient client = new TicketClient();
-		client.requestTicket();
-	}
-
-	@Test
-	public void testServerCachedHardInstance() {
-		try {
-			TicketServer.start(16790);
-		} catch (Exception e) {
-			fail();
-		}
-		TicketClient client1 = new TicketClient("localhost", "c1");
-		TicketClient client2 = new TicketClient("localhost", "c2");
-		client1.requestTicket();
-		client2.requestTicket();
 		
+		System.out.println("TEST 1...");
+		final TicketServer ticketOffice = new TicketServer ();
+		Thread t0 = new Thread () 
+		{
+			public void run ()
+			{
+				try 
+				{
+					ticketOffice.start(2222);
+				} 
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		t0.start();
+		
+		final TicketClient c1 = new TicketClient("A");
+		Thread t1 = new Thread() {
+			public void run() {
+				c1.requestTicket();
+			}
+		};
+		t1.start();
+		
+		try {
+			t1.join();
+		} 
+		
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		finally 
+		{
+			System.exit(0);
+		}
 	}
 
-	@Test
-	public void twoNonConcurrentServerTest() {
-		try {
-			TicketServer.start(16791);
-		} catch (Exception e) {
-			fail();
+//	@Test
+	public void testServerCachedHardInstance() throws InterruptedException {
+		
+		System.out.println("TEST 2 ...");
+		
+		final int customersTotal = 729;
+		final int seatsTotal = 728;
+		final TicketServer ticketOffice = new TicketServer ();
+		
+		Thread t0 = new Thread () 
+		{
+			public void run ()
+			{
+				try 
+				{
+					ticketOffice.start(2223);
+				} 
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		t0.start();
+
+		Thread[] threadArr = new Thread[seatsTotal];
+		final TicketClient c1 = new TicketClient("A");
+		final TicketClient c2 = new TicketClient("B");
+		
+		try 
+		{
+			for (int i = 0; i < seatsTotal; i++)
+			{
+				if ((i % 2) == 1)
+				{
+					threadArr[i] = new Thread() {
+						public void run() {
+							c1.requestTicket();
+						}
+					};
+					threadArr[i].start();
+				}
+			
+				else 
+				{
+					threadArr[i] = new Thread() {
+						public void run() {
+							c2.requestTicket();
+						}
+					};
+					threadArr[i].start();
+				}
+			}
 		}
-		TicketClient c1 = new TicketClient("nonconc1");
-		TicketClient c2 = new TicketClient("nonconc2");
-		TicketClient c3 = new TicketClient("nonconc3");
-		c1.requestTicket();
-		c2.requestTicket();
-		c3.requestTicket();
+		
+		catch (Exception e)
+		{
+			System.err.println("");
+		}
+		
+		finally 
+		{
+			for(int i = 0; i < seatsTotal; i++)
+			{
+				threadArr[i].join();
+			}
+			System.exit(0);
+		}
 	}
+
 
 	@Test
 	public void twoConcurrentServerTest() {
@@ -83,6 +157,5 @@ public class TestTicketOffice {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 }

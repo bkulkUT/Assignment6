@@ -29,7 +29,7 @@ public class Driver
 			}
 		};
 		t0.start();
-//		t0.join();
+
 		Thread[] threadArr = new Thread[728];
 		
 		/*

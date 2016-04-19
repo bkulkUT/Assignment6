@@ -29,7 +29,6 @@ public class Theater {
 	
 	public synchronized int bestAvailableSeat ()
 	{
-//		System.out.println("THEATER : Inside bestAvailableSeat method!");
 		
 		int rowIncr = 100 * (startRow + 1);
 		
@@ -66,7 +65,7 @@ public class Theater {
 		return -1;
 	}
 	
-	public synchronized void markAvailableSeatTaken (int seat, String thread)
+	public synchronized void markAvailableSeatTaken (int seat, String thread) throws InterruptedException
 	{
 		int row = (seat/100) - 1;
 		int col = (seat % 100) - 1;
@@ -77,8 +76,10 @@ public class Theater {
 		{
 			startRow++;
 		}
-		printSeatTicket(row, col, thread);
 		
+		printSeatTicket(row, col, thread);
+		Thread.sleep(5);
+	
 		return;
 	}
 	
