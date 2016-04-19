@@ -80,6 +80,11 @@ class ThreadedTicketServer implements Runnable {
 		{
 			e.printStackTrace();
 		}
+		
+		catch(Exception e2)
+		{
+			System.err.println("Another exception");
+		}
 	}
 }
 

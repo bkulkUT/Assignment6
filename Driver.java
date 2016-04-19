@@ -29,6 +29,8 @@ public class Driver
 			}
 		};
 		t0.start();
+//		t0.join();
+		Thread[] threadArr = new Thread[728];
 		
 		/*
 		 * Create two concurrent threads for the TicketClients 
@@ -42,30 +44,23 @@ public class Driver
 			{
 				if ((i % 2) == 1)
 				{
-					Thread t1 = new Thread() {
+					threadArr[i] = new Thread() {
 						public void run() {
 							c1.requestTicket();
 						}
 					};
-					t1.start();
-					t1.join();
+					threadArr[i].start();
 				}
 			
 				else 
 				{
-					Thread t2 = new Thread() {
+					threadArr[i] = new Thread() {
 						public void run() {
 							c2.requestTicket();
 						}
 					};
-					t2.start();
-					t2.join();
+					threadArr[i].start();
 				}
-			}
-			
-			if (customersTotal > seatsTotal)
-			{
-				System.out.println("Sorry -- House is full!");
 			}
 		}
 		
@@ -76,6 +71,15 @@ public class Driver
 		
 		finally 
 		{
+			for(int i = 0; i < 728; i++)
+			{
+				threadArr[i].join();
+			}
+			
+			if (customersTotal > seatsTotal)
+			{
+				System.out.println("Sorry -- House is full!");
+			}
 			System.exit(0);
 		}
 	}
