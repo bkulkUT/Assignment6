@@ -73,6 +73,11 @@ public class Driver
 		{
 			System.err.println("");
 		}
+		
+		finally 
+		{
+			System.exit(0);
+		}
 	}
 }
 
