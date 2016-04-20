@@ -12,8 +12,8 @@ public class TestTicketOffice {
 
 //	 @Test
 	public void basicServerTest() {
-		
 		System.out.println("TEST 1...");
+		
 		final TicketServer ticketOffice = new TicketServer ();
 		Theater myTheater = new Theater ();
 		
@@ -56,7 +56,6 @@ public class TestTicketOffice {
 
 //	@Test
 	public void testServerCachedHardInstance() throws InterruptedException {
-		
 		System.out.println("TEST 2 ...");
 		
 		final int customersTotal = 729;
@@ -124,10 +123,10 @@ public class TestTicketOffice {
 		}
 	}
 
-
 	@Test
-	public void twoConcurrentServerTest() throws InterruptedException {
-
+	public void twoConcurrentServerTest() throws InterruptedException, IOException {
+		System.out.println("TEST 3 ...");
+		
 		final int customersTotal = 729;
 		final int seatsTotal = 728;
 		final TicketServer ticketOffice_1 = new TicketServer ();
@@ -140,6 +139,7 @@ public class TestTicketOffice {
 			{
 				try 
 				{
+					System.out.println("Ticket office 1 calling (2222)");
 					ticketOffice_1.start(2222, myTheater);
 				} 
 				catch (IOException e) {
@@ -155,7 +155,8 @@ public class TestTicketOffice {
 			{
 				try 
 				{
-					ticketOffice_2.start(2223, myTheater);
+					System.out.println("Ticket office 2 calling (4444)");
+					ticketOffice_2.start(4444, myTheater);
 				} 
 				catch (IOException e) {
 					e.printStackTrace();
@@ -206,6 +207,9 @@ public class TestTicketOffice {
 			{
 				threadArr[i].join();
 			}
+			ticketOffice_1.serverSocket.close();
+			ticketOffice_2.serverSocket.close();
+			
 			System.exit(0);
 		}
 	}

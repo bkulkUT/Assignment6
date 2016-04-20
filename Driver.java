@@ -30,8 +30,6 @@ public class Driver
 			}
 		};
 		t0.start();
-
-		Thread[] threadArr = new Thread[728];
 		
 		/*
 		 * Create two concurrent threads for the TicketClients 
@@ -39,6 +37,8 @@ public class Driver
 		 */
 		final TicketClient c1 = new TicketClient("A");
 		final TicketClient c2 = new TicketClient("B");
+		Thread[] threadArr = new Thread[728];
+		
 		try 
 		{
 			for (int i = 0; i < seatsTotal; i++)
