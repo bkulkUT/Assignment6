@@ -1,6 +1,6 @@
 # Assignment6
 
-Bharat Kulkarni
+Bharat Kulkarni - 
 Karime Saad - ks38728
 
-Github Link: 
+Github Link: https://github.com/bkulkUT/Assignment6.git
