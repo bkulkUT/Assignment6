@@ -10,51 +10,51 @@ public class TestTicketOffice {
 
 	public static int score = 0;
 
-//	 @Test
-	public void basicServerTest() {
-		System.out.println("TEST 1...");
-		
-		final TicketServer ticketOffice = new TicketServer ();
-		Theater myTheater = new Theater ();
-		
-		Thread t0 = new Thread () 
-		{
-			public void run ()
-			{
-				try 
-				{
-					ticketOffice.start(2222, myTheater);
-				} 
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		t0.start();
-		
-		final TicketClient c1 = new TicketClient("A");
-		Thread t1 = new Thread() {
-			public void run() {
-				c1.requestTicket();
-			}
-		};
-		t1.start();
-		
-		try {
-			t1.join();
-		} 
-		
-		catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		finally 
-		{
-			System.exit(0);
-		}
-	}
+////	 @Test
+//	public void basicServerTest() {
+//		System.out.println("TEST 1...");
+//		
+//		final TicketServer ticketOffice = new TicketServer ();
+//		Theater myTheater = new Theater ();
+//		
+//		Thread t0 = new Thread () 
+//		{
+//			public void run ()
+//			{
+//				try 
+//				{
+//					ticketOffice.start(2222, myTheater);
+//				} 
+//				catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		};
+//		t0.start();
+//		
+//		final TicketClient c1 = new TicketClient("A");
+//		Thread t1 = new Thread() {
+//			public void run() {
+//				c1.requestTicket();
+//			}
+//		};
+//		t1.start();
+//		
+//		try {
+//			t1.join();
+//		} 
+//		
+//		catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		finally 
+//		{
+//			System.exit(0);
+//		}
+//	}
 
-//	@Test
+	@Test
 	public void testServerCachedHardInstance() throws InterruptedException {
 		System.out.println("TEST 2 ...");
 		
@@ -123,15 +123,16 @@ public class TestTicketOffice {
 		}
 	}
 
-	@Test
+//	@Test
 	public void twoConcurrentServerTest() throws InterruptedException, IOException {
 		System.out.println("TEST 3 ...");
 		
 		final int customersTotal = 729;
 		final int seatsTotal = 728;
 		final TicketServer ticketOffice_1 = new TicketServer ();
-		final TicketServer ticketOffice_2 = new TicketServer ();
 		Theater myTheater = new Theater ();
+		
+		System.out.println("Thread name in driver is " + Thread.currentThread().getName());
 		
 		Thread t0 = new Thread () 
 		{
@@ -140,7 +141,7 @@ public class TestTicketOffice {
 				try 
 				{
 					System.out.println("Ticket office 1 calling (2222)");
-					ticketOffice_1.start(2222, myTheater);
+					ticketOffice_1.start(2223, myTheater);
 				} 
 				catch (IOException e) {
 					e.printStackTrace();
@@ -155,8 +156,8 @@ public class TestTicketOffice {
 			{
 				try 
 				{
-					System.out.println("Ticket office 2 calling (4444)");
-					ticketOffice_2.start(4444, myTheater);
+					System.out.println("Ticket office 1 calling (4444)");
+					ticketOffice_1.start(4445, myTheater);
 				} 
 				catch (IOException e) {
 					e.printStackTrace();
@@ -164,8 +165,7 @@ public class TestTicketOffice {
 			}
 		};
 		t1.start();
-		
-
+				
 		Thread[] threadArr = new Thread[seatsTotal];
 		final TicketClient c1 = new TicketClient("A");
 		final TicketClient c2 = new TicketClient("B");
@@ -208,7 +208,6 @@ public class TestTicketOffice {
 				threadArr[i].join();
 			}
 			ticketOffice_1.serverSocket.close();
-			ticketOffice_2.serverSocket.close();
 			
 			System.exit(0);
 		}

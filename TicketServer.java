@@ -14,19 +14,32 @@ public class TicketServer {
 	static public ServerSocket serverSocket;
 	final  int MAXPARALLELTHREADS = 3;
 
-	public void start(int portNumber, Theater myTheater) throws IOException {
+	public static void start(int portNumber, Theater myTheater) throws IOException {
 		theater = myTheater;
 		PORT = portNumber;
 		System.out.println("The port number is " + PORT);
 		serverSocket = new ServerSocket(TicketServer.PORT);
 		
-		while (true)
+		System.out.println("Thread name in driver is " + Thread.currentThread().getName());
+		
+		Thread server_0 = new Thread ()
 		{
-			Socket clientSocket = serverSocket.accept();
-			Runnable serverThread = new ThreadedTicketServer(clientSocket);
-			Thread t = new Thread(serverThread);
-			t.start();
-		}
+			public void run () 
+			{
+				while (true)
+				{
+					Socket clientSocket = null;
+					try {
+						clientSocket = serverSocket.accept();
+					} catch (IOException e) {}
+					
+					Runnable serverThread = new ThreadedTicketServer(clientSocket);
+					Thread t = new Thread(serverThread);
+					t.start();
+				}
+			}
+		};
+		server_0.start();
 	}
 }
 
